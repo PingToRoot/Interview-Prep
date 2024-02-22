@@ -1,0 +1,110 @@
+# Cypher Query Cheat Sheet
+
+## Create Data
+
+- Create a node with a label and properties:
+  ```cypher
+  CREATE (n:Label {property1: 'value1', property2: 'value2'})
+  ```
+- Create a relationship between two nodes:
+  ```cypher
+  CREATE (n1)-[:RELATIONSHIP_TYPE {property: 'value'}]->(n2)
+  ```
+- Create multiple nodes and relationships together:
+  ```cypher
+  CREATE (n1:Label1 {property: 'value'}), (n2:Label2 {property: 'value'}), (n1)-[:RELATIONSHIP_TYPE]->(n2)
+  ```
+
+## Read Data
+
+- Match and return all nodes:
+  ```cypher
+  MATCH (n) RETURN n
+  ```
+- Match nodes by label:
+  ```cypher
+  MATCH (n:Label) RETURN n
+  ```
+- Match nodes by property:
+  ```cypher
+  MATCH (n {property: 'value'}) RETURN n
+  ```
+- Match related nodes:
+  ```cypher
+  MATCH (n1)-[:RELATIONSHIP_TYPE]->(n2) RETURN n1, n2
+  ```
+- Match with complex patterns:
+  ```cypher
+  MATCH (n1:Label1)-[:RELATIONSHIP_TYPE]->(n2:Label2) RETURN n1, n2
+  ```
+
+## Update Data
+
+- Set a property on a node:
+  ```cypher
+  MATCH (n:Label {property: 'value'}) SET n.newProperty = 'newValue'
+  ```
+- Update a property:
+  ```cypher
+  MATCH (n:Label) SET n.property = 'newValue'
+  ```
+- Remove a property:
+  ```cypher
+  MATCH (n:Label) REMOVE n.property
+  ```
+
+## Delete Data
+
+- Delete a node:
+  ```cypher
+  MATCH (n:Label {property: 'value'}) DELETE n
+  ```
+- Delete a relationship:
+  ```cypher
+  MATCH (n1)-[r:RELATIONSHIP_TYPE]->(n2) DELETE r
+  ```
+- Delete a node with all its relationships:
+  ```cypher
+  MATCH (n:Label {property: 'value'}) DETACH DELETE n
+  ```
+
+## Aggregations and Ordering
+
+- Return count of nodes:
+  ```cypher
+  MATCH (n:Label) RETURN count(n)
+  ```
+- Group by a property and count:
+  ```cypher
+  MATCH (n:Label) RETURN n.property, count(*)
+  ```
+- Order by a property:
+  ```cypher
+  MATCH (n:Label) RETURN n.property ORDER BY n.property
+  ```
+
+## Combining Queries (WITH)
+
+- Chain query parts together:
+  ```cypher
+  MATCH (n:Label) WITH n.property AS prop MATCH (m:OtherLabel {otherProperty: prop}) RETURN m
+  ```
+
+## Conditional Logic (CASE)
+
+- Using CASE in RETURN:
+  ```cypher
+  MATCH (n:Label)
+  RETURN n.property, CASE WHEN n.property = 'value' THEN 'It is value' ELSE 'It is not value' END
+  ```
+
+## Index Management
+
+- Create an index on a node property:
+  ```cypher
+  CREATE INDEX ON :Label(property)
+  ```
+- Drop an index:
+  ```cypher
+  DROP INDEX ON :Label(property)
+  ```
